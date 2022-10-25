@@ -1,3 +1,6 @@
 [submodule "src/super-mario-python"]
 	path = src/super-mario-python
 	url = https://github.com/alex-gdv/super-mario-python.git
+[submodule "src/mariopuzzle"]
+	path = src/mariopuzzle
+	url = https://github.com/SliverySky/mariopuzzle.git

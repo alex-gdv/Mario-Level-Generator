@@ -2,16 +2,17 @@ import numpy as np
 import pygame
 import os
 import random
-from gym import Env, spaces, Wrapper
+from gym import Env, spaces
 from torchvision import transforms
 
+from config import *
 from common.utils import *
 from super_mario_python.classes.Dashboard import Dashboard
 from super_mario_python.classes.Level import Level
 from super_mario_python.classes.Sound import Sound
 from super_mario_python.entities.MarioAI import MarioAI
 
-class Mario_Play_Env():
+class Mario_Play_Env(Env):
     def __init__(self, visuals=False, collect_data=False):
         super(Mario_Play_Env, self).__init__()
         self.observation_shape = (1, 84, 84)
@@ -43,7 +44,7 @@ class Mario_Play_Env():
         self.max_x = 0
         self.rew_sum = 0
         self.screen = pygame.display.set_mode(WINDOW_SIZE) if self._visuals else pygame.display.set_mode(WINDOW_SIZE, flags=pygame.HIDDEN)
-        self.dashboard = Dashboard(f"{rootpath}/super_mario_python/img/font.png", 8, self.screen)
+        self.dashboard = Dashboard(f"{PATH_SUPER_MARIO_PYTHON}/super_mario_python/img/font.png", 8, self.screen)
         self.sound = Sound()
         self.level = Level(self.screen, self.sound, self.dashboard)
         if self._level_name is None:

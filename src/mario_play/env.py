@@ -5,7 +5,7 @@ import random
 from gym import Env, spaces, Wrapper
 from torchvision import transforms
 
-from commons import *
+from common.utils import *
 from super_mario_python.classes.Dashboard import Dashboard
 from super_mario_python.classes.Level import Level
 from super_mario_python.classes.Sound import Sound
@@ -121,20 +121,3 @@ class Mario_Play_Env():
     
     def close(self):
         pygame.quit()
-
-class Skip_Frame(Wrapper):
-    def __init__(self, env, skip=8):
-        super().__init__(env)
-        self._skip = skip
-    
-    def step(self, action):
-        rew_total = 0
-        done = False
-        for _ in range(self._skip):
-            obs, reward, done, info = self.env.step(action)
-            rew_total += reward
-            if done: 
-                if (info["game_over"] or info["max_actions"]):
-                    rew_total = -100
-                break
-        return obs, rew_total / self._skip, done, info

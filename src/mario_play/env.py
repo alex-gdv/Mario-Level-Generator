@@ -6,11 +6,13 @@ from gym import Env, spaces
 from torchvision import transforms
 
 from config import *
-from common.utils import *
-from super_mario_python.classes.Dashboard import Dashboard
-from super_mario_python.classes.Level import Level
-from super_mario_python.classes.Sound import Sound
-from super_mario_python.entities.MarioAI import MarioAI
+from ..common.utils import *
+from ..super_mario_python.classes.Dashboard import Dashboard
+from ..super_mario_python.classes.Level import Level
+from ..super_mario_python.classes.Sound import Sound
+from ..super_mario_python.entities.MarioAI import MarioAI
+
+WINDOW_SIZE = (640, 480)
 
 class Mario_Play_Env(Env):
     def __init__(self, visuals=False, collect_data=False):

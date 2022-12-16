@@ -1,5 +1,7 @@
-# Source:
-# https://github.com/jiseongHAN/Super-Mario-RL/blob/master/duel_dqn.py
+'''
+Source:
+https://github.com/jiseongHAN/Super-Mario-RL/blob/master/duel_dqn.py
+'''
 
 import pickle
 import random
@@ -11,8 +13,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
-from wrappers import *
-
+from ..mario_play.train2 import create_env
 
 def arrange(s):
     if not type(s) == "numpy.ndarray":
@@ -153,11 +154,9 @@ def main(env, q, q_target, optimizer, device):
             pickle.dump(score_lst, open("score.p", "wb"))
 
 
-if __name__ == "__main__":
+def run():
     n_frame = 4
-    # env = gym_super_mario_bros.make("SuperMarioBros-v0")
-    # env = JoypadSpace(env, COMPLEX_MOVEMENT)
-    # env = wrap_mario(env)
+    env = create_env()
     device = "cuda" if torch.cuda.is_available() else "cpu"
     q = model(n_frame, env.action_space.n, device).to(device)
     q_target = model(n_frame, env.action_space.n, device).to(device)

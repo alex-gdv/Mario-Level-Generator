@@ -11,13 +11,14 @@ from ..super_mario_python.classes.Dashboard import Dashboard
 from ..super_mario_python.classes.Level import Level
 from ..super_mario_python.classes.Sound import Sound
 from ..super_mario_python.entities.MarioAI import MarioAI
+from ..common.utils import load_level_names
 
 WINDOW_SIZE = (640, 480)
 
 class Mario_Play_Env(Env):
     def __init__(self, visuals=False, collect_data=False):
         super(Mario_Play_Env, self).__init__()
-        self.observation_shape = (1, 84, 84)
+        self.observation_shape = (480, 640, 3)
         self.observation_space = spaces.Box(
                             low=np.zeros(self.observation_shape, dtype=np.uint8),
                             high=np.full(self.observation_shape, 255, dtype=np.uint8),
@@ -46,7 +47,7 @@ class Mario_Play_Env(Env):
         self.max_x = 0
         self.rew_sum = 0
         self.screen = pygame.display.set_mode(WINDOW_SIZE) if self._visuals else pygame.display.set_mode(WINDOW_SIZE, flags=pygame.HIDDEN)
-        self.dashboard = Dashboard(f"{PATH_SUPER_MARIO_PYTHON}/super_mario_python/img/font.png", 8, self.screen)
+        self.dashboard = Dashboard(f"{PATH_SUPER_MARIO_PYTHON}/img/font.png", 8, self.screen)
         self.sound = Sound()
         self.level = Level(self.screen, self.sound, self.dashboard)
         if self._level_name is None:
@@ -62,13 +63,13 @@ class Mario_Play_Env(Env):
 
     def get_observation(self):
         frame = pygame.surfarray.array3d(self.screen.copy()).swapaxes(0, 1)
-        preprocess = transforms.Compose([
-                                    transforms.ToPILImage(),
-                                    transforms.Grayscale(),
-                                    transforms.Resize((84, 84)),
-                                    transforms.PILToTensor()])
-        obs = preprocess(frame).numpy()
-        return obs
+        # preprocess = transforms.Compose([
+        #                             transforms.ToPILImage(),
+        #                             transforms.Grayscale(),
+        #                             transforms.Resize((84, 84)),
+        #                             transforms.PILToTensor()])
+        # obs = preprocess(frame).numpy()
+        return frame
 
     def get_reward(self):
         # reward 1
@@ -124,3 +125,6 @@ class Mario_Play_Env(Env):
     
     def close(self):
         pygame.quit()
+
+    def get_action_meanings(self):
+        return ["NOOP"]

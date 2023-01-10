@@ -1,1 +1,1 @@
-PATH_SUPER_MARIO_PYTHON = "./src/"
+PATH_SUPER_MARIO_PYTHON = "./src/super_mario_python/"

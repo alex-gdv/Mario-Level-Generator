@@ -12,5 +12,5 @@ def create_env():
     env = MaxAndSkipEnv(env)
     env = WarpFrame(env)
     env = ScaledFloatFrame(env)
-    env = FrameStack(env)
+    env = FrameStack(env, k=4)
     return env

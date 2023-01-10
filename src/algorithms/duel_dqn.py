@@ -100,7 +100,7 @@ def main(env, q, q_target, optimizer, device):
     gamma = 0.99
     batch_size = 256
 
-    N = 50000
+    N = 100000
     eps = 0.001
     memory = replay_memory(N)
     update_interval = 50
@@ -122,13 +122,13 @@ def main(env, q, q_target, optimizer, device):
                     a = np.argmax(q(s).detach().numpy())
                 else:
                     a = np.argmax(q(s).cpu().detach().numpy())
+            # print(f"action {a}")
             s_prime, r, done, _ = env.step(a)
             s_prime = arrange(s_prime)
             total_score += r
             r = np.sign(r) * (np.sqrt(abs(r) + 1) - 1) + 0.001 * r
             memory.push((s, float(r), int(a), s_prime, int(1 - done)))
             s = s_prime
-            stage = env.unwrapped._stage
             if len(memory) > 2000:
                 loss += train(q, q_target, memory, batch_size, gamma, optimizer, device)
                 t += 1
@@ -139,13 +139,12 @@ def main(env, q, q_target, optimizer, device):
 
         if k % print_interval == 0:
             print(
-                "%s |Epoch : %d | score : %f | loss : %.2f | stage : %d"
+                "%s |Epoch : %d | score : %f | loss : %.2f"
                 % (
                     device,
                     k,
                     total_score / print_interval,
                     loss / print_interval,
-                    stage,
                 )
             )
             score_lst.append(total_score / print_interval)

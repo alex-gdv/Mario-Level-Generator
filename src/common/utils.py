@@ -3,7 +3,7 @@ import os
 def load_level_names():
     files = []
     res = []
-    for r, d, f in os.walk(f"./super_mario_python/levels"):
+    for r, d, f in os.walk(f"./src/super_mario_python/levels"):
         for file in f:
             files.append(os.path.join(r, file))
     for f in files:

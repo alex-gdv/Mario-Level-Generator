@@ -162,3 +162,22 @@ def run():
     optimizer = optim.Adam(q.parameters(), lr=0.0001)
     print(device)
     main(env, q, q_target, optimizer, device)
+
+def test():
+    print("hello 1")
+    env = create_env(visuals=True)
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    q = model(4, env.action_space.n, device).to(device)
+    q.load_state_dict(torch.load("./mario_q_target.pth"))
+    q.eval()
+    print("hello 2")
+    s = arrange(env.reset())
+    done = False
+    while not done:
+        if device == 'cpu':
+            a = np.argmax(q(s).detach().numpy())
+        else:
+            a = np.argmax(q(s).cpu().detach().numpy())
+        s_prime, r, done, _ = env.step(a)
+        s_prime = arrange(s_prime)
+        s = s_prime

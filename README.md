@@ -1,4 +1,4 @@
-# AI Python Framework for Super Mario Bros.
+# Mario Level Generator
 
 *CURRENTLY UNDER DEVELOPMENT*
 
